@@ -8,6 +8,7 @@ package java_study.study200409;
  *
  ******************************************************************************/
 
+
 import edu.princeton.cs.introcs.StdDraw;
 
 import java.awt.Color;
