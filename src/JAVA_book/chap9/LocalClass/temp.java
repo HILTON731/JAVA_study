@@ -1,6 +1,6 @@
 package JAVA_book.chap9.LocalClass;
 
-import dke.computernetwork.Packet;
+import dke.computernetwork.assingment.Packet;
 
 import java.util.Random;
 

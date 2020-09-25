@@ -1,4 +1,4 @@
-package dke.computernetwork;
+package dke.computernetwork.assingment;
 
 public class Simulator {
     static Sender sender;

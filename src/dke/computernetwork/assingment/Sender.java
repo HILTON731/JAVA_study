@@ -1,4 +1,4 @@
-package dke.computernetwork;
+package dke.computernetwork.assingment;
 
 import java.util.Random;
 

@@ -1,6 +1,4 @@
-package dke.computernetwork;
-
-import java.util.concurrent.Callable;
+package dke.computernetwork.assingment;
 
 public class Receiver extends Thread{
     Sender sender;
