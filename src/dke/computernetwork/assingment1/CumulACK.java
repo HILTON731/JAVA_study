@@ -3,7 +3,6 @@ package dke.computernetwork.assingment1;
 import java.util.LinkedList;
 
 public class CumulACK extends LinkedList<ACK> {
-    int rcv_base;
     @Override
     public int size() {
         return super.size();

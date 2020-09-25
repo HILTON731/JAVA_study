@@ -24,45 +24,23 @@ public class Sender {
             packets[i].setCorruptProb();
             pipeline.add(packets[i]);
         }
-//        Debugging code.
-//        Check How Packet send in pipeline.
-        for(Packet packet: pipeline){
-            System.out.println(packet.pkt_num + ": "+packet.corrupt); // Number of corrupted packet.
-        }
-
         return pipeline;
     }
 
     public void rcvACK(CumulACK rcv_cumulACK){
 
         cumulACK = rcv_cumulACK;
-//        for(int i = pipeline.base; i<cumulACK.rcv_base;i++){
-//            pipeline.removeFirst();
-//        }
-        for(int i = 0; i<pipeline.window_size;i++){
-            pipeline.removeFirst();
-        }
 
-
-        pipeline.base = cumulACK.rcv_base;
-        pipeline.next_seq_num += cumulACK.rcv_base;
-        if(pipeline.next_seq_num>Env.PACKET_NUM){
-            pipeline.next_seq_num = Env.PACKET_NUM;
+        for(int i = 0; i < cumulACK.size(); i++){
+            if(pipeline.get(i).pkt_num == cumulACK.get(i).pkt_num){
+                pipeline.base++;
+                pipeline.next_seq_num++;
+            } else {
+                break;
+            }
         }
-        System.out.println("rcvACK next_seq_num: "+pipeline.next_seq_num);
     }
 
-
-
-//    public void measureTime(Packet packet){
-//        Timer timer = new Timer();
-//        TimerTask task = new TimerTask(){
-//
-//            @Override
-//            public void run() {
-//                if(cumulACK.get)
-//            }
-//        }
-//    }
+//    public void Timer(){}
 }
 
