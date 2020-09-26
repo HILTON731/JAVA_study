@@ -36,7 +36,8 @@ public class Sender {
         cumulACK = rcv_cumulACK;
         int i;
         for (i = 0; i < cumulACK.size(); i++) {
-            if (pipeline.get(i).pktNum == cumulACK.get(i).pktNum && pipeline.get(i).sendTime == cumulACK.get(i).rcvTime - 1) {
+            cumulACK.get(i).rcvTime++;
+            if (pipeline.get(i).pktNum == cumulACK.get(i).pktNum && pipeline.get(i).sendTime == cumulACK.get(i).rcvTime - 2) {
                 pipeline.base++;
                 pipeline.nextSeqNum++;
             } else {

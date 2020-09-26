@@ -19,6 +19,9 @@ public class Receiver {
 //    Return success code if packets in pipeline clear or return first packet number which has problem.
     public void checkOrder() {
         for (int i = 0; i < pipeline.size(); i++) {
+
+            pipeline.get(i).sendTime ++;
+
             if (pipeline.base == pipeline.get(i).pktNum && !(pipeline.get(i).corrupt)) {
                 cumulACK.add(new ACK(pipeline.get(i).pktNum, pipeline.get(i).sendTime + 1));
             }
