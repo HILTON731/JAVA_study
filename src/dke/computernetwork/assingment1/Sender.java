@@ -19,11 +19,18 @@ public class Sender {
 //    Put packets seq_base to next_seq_num in Pipeline and return pipeline.
 //    Receiver.receivePipeline will receive Pipeline and check it`s order and something corrupted.
     public Pipeline sendPacket(){
+
+        if(pipeline.next_seq_num >= Env.PACKET_NUM){
+            pipeline.next_seq_num = Env.PACKET_NUM;
+            pipeline.setSize(pipeline.next_seq_num - pipeline.base);
+        }
         for(int i = pipeline.base; i<pipeline.next_seq_num; i++){
+            System.out.println(i);
             if(i > Env.PACKET_NUM) System.out.println("ERR: Out Of Bount");
             packets[i].setCorruptProb();
             pipeline.add(packets[i]);
         }
+        System.out.println(pipeline.size());
         return pipeline;
     }
 
@@ -41,6 +48,6 @@ public class Sender {
         }
     }
 
-//    public void Timer(){}
+    public void Timer(){}
 }
 

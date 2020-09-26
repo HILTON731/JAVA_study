@@ -14,7 +14,9 @@ public class Pipeline extends LinkedList<Packet> {
 
     @Override
     public boolean add(Packet packet) {
-        if(size() >= Env.MAX_SIZE) {
+
+
+        while(size() >= window_size) {
             removeFirst();
         }
         return super.add(packet);
@@ -29,6 +31,8 @@ public class Pipeline extends LinkedList<Packet> {
     public Packet removeFirst() {
         return super.removeFirst();
     }
+
+    public void setSize(int window_size){ this.window_size = window_size;}
 
 
 }

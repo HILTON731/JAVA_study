@@ -3,6 +3,7 @@ package dke.computernetwork.assingment1;
 import java.util.LinkedList;
 
 public class CumulACK extends LinkedList<ACK> {
+
     @Override
     public int size() {
         return super.size();
@@ -10,7 +11,7 @@ public class CumulACK extends LinkedList<ACK> {
 
     @Override
     public boolean add(ACK ack) {
-        if(size() >= Env.MAX_SIZE) {
+        while(size() >= Sender.pipeline.window_size) {
             removeFirst();
         }
         return super.add(ack);
