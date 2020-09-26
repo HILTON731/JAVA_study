@@ -3,10 +3,13 @@ package dke.computernetwork.assingment;
 
 public class ACK {
     public int pktNum = -1;
-    public int rcvTime = 0;
+    public long rcvTime = 0;
 
-    public ACK(int pktNum, int rcvTime) {
+    public ACK(int pktNum) {
         this.pktNum = pktNum;
-        this.rcvTime = rcvTime;
+        setRcvTime();
+    }
+    public void setRcvTime(){
+        rcvTime = System.currentTimeMillis();
     }
 }

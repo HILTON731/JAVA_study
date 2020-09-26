@@ -15,7 +15,7 @@ public class Sender {
 
     //    Put packets seq_base to next_seq_num in Pipeline and return pipeline.
 //    Receiver.receivePipeline will receive Pipeline and check it`s order and something corrupted.
-    public Pipeline sendPacket() {
+    public Pipeline sendPacket() throws InterruptedException {
 
         if (pipeline.nextSeqNum >= Env.PACKET_NUM) {
             pipeline.nextSeqNum = Env.PACKET_NUM;
@@ -23,8 +23,15 @@ public class Sender {
         }
         for (int i = pipeline.base; i < pipeline.nextSeqNum; i++) {
             if (i > Env.PACKET_NUM) System.out.println("ERR: Out Of Bount");
-            packets[i].setPayload(i);
+            packets[i].setPayload();
+            packets[i].setSendTime();
             pipeline.add(packets[i]);
+
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e){
+                e.printStackTrace();
+            }
         }
         return pipeline;
     }
@@ -33,9 +40,15 @@ public class Sender {
 
         cumulACK = rcv_cumulACK;
         int i;
+
         for (i = 0; i < cumulACK.size(); i++) {
-            cumulACK.get(i).rcvTime++;
-            if (pipeline.get(i).pktNum == cumulACK.get(i).pktNum && pipeline.get(i).sendTime == cumulACK.get(i).rcvTime - 2) {
+            try {
+                Thread.sleep(1);
+            } catch(InterruptedException e) {
+                e.printStackTrace();
+            }
+            cumulACK.get(i).setRcvTime();
+            if (pipeline.get(i).pktNum == cumulACK.get(i).pktNum && cumulACK.get(i).rcvTime - pipeline.get(i).sendTime <= 140) {
                 pipeline.base++;
                 pipeline.nextSeqNum++;
             } else {

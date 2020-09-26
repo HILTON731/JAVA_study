@@ -7,7 +7,7 @@ public class Simulator {
 
     //        Simulation Monitoring.
 //        Check How Packet sent in pipeline.
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         System.out.println("---------- Simulation Start ----------");
         while (Receiver.pipeline.base < Env.PACKET_NUM) {
             System.out.println("########## Step "+step+" ##########");
@@ -20,6 +20,13 @@ public class Simulator {
                 System.out.println("sender.sendPacket().pipeline.pkt_num: " + packet.pktNum + " IsCorrupt: " + packet.corrupt + " SendTime: " + packet.sendTime); // Number of corrupted packet.
             }
 
+//            1/2 RTT
+            try {
+                Thread.sleep(50);
+            } catch(InterruptedException e) {
+                e.printStackTrace();
+            }
+
             System.out.println();
 
             if (!receiver.receivePipeline(pktblk)) {
@@ -27,7 +34,7 @@ public class Simulator {
             }
             System.out.println("## Receiver get packet that sender sent ##");
             for (Packet packet : Receiver.pipeline){
-                System.out.println("receiver.rcvPacket().pipeline.pkt_num: " + packet.pktNum + " IsCorrupt: " + packet.corrupt + " rcvTime: " + packet.sendTime); // Number of corrupted packet.
+                System.out.println("receiver.rcvPacket().pipeline.pkt_num: " + packet.pktNum + " IsCorrupt: " + packet.corrupt + " rcvTime: " + System.currentTimeMillis()); // Number of corrupted packet.
             }
 
             System.out.println();
@@ -37,6 +44,13 @@ public class Simulator {
             System.out.println("## Receiver check packet and send ACK to sender ##");
             for (ACK ack : cumulACK) {
                 System.out.println("receiver.sendACK.pkt_num: " + ack.pktNum + " sndTime: " + ack.rcvTime);
+            }
+
+//            1/2 RTT
+            try {
+                Thread.sleep(50);
+            } catch(InterruptedException e) {
+                e.printStackTrace();
             }
 
             sender.rcvACK(cumulACK);

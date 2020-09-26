@@ -6,7 +6,7 @@ public class Receiver {
 
 //    Receive Pipeline from Sender.
 //    After receiving check pipeline that something corrupted or inorder packet.
-    public boolean receivePipeline(Pipeline pipeline) {
+    public boolean receivePipeline(Pipeline pipeline) throws InterruptedException {
         cumulACK.clear();
         Receiver.pipeline = pipeline;
         checkOrder();
@@ -17,13 +17,18 @@ public class Receiver {
 //    Put cumulativeACK queue if everythings fine.
 //    If inordered or corrupted packet found then collect in linkedlist detective.
 //    Return success code if packets in pipeline clear or return first packet number which has problem.
-    public void checkOrder() {
-        for (int i = 0; i < pipeline.size(); i++) {
+    public void checkOrder() throws InterruptedException {
 
-            pipeline.get(i).sendTime ++;
+        for (int i = 0; i < pipeline.size(); i++) {
+            try {
+                Thread.sleep(1);
+            } catch(InterruptedException e) {
+                e.printStackTrace();
+            }
+//            pipeline.get(i).setSendTime();
 
             if (pipeline.base == pipeline.get(i).pktNum && !(pipeline.get(i).corrupt)) {
-                cumulACK.add(new ACK(pipeline.get(i).pktNum, pipeline.get(i).sendTime + 1));
+                cumulACK.add(new ACK(pipeline.get(i).pktNum));
             }
             pipeline.base++;
         }
