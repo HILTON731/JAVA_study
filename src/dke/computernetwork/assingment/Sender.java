@@ -1,57 +1,56 @@
 package dke.computernetwork.assingment;
 
-import java.util.Random;
-
 public class Sender {
 
-    Random rand = new Random();
-    public static Pipeline pipeline = new Pipeline();
-    public static CumulativeACK cumulativeACK = new CumulativeACK();
-    public Packet[] packets = new Packet[1000];
+    static Pipeline pipeline = new Pipeline();
+    static CumulACK cumulACK = new CumulACK();
+    Packet[] packets = new Packet[Env.PACKET_NUM];
 
-    public Sender(){
-        for(int i = 0;i<1000;i++){
+    //    Create 1000 packets when Sender called.
+    public Sender() {
+        for (int i = 0; i < Env.PACKET_NUM; i++) {
             packets[i] = new Packet(i);
         }
     }
-    public void sendPacket(){
-        for(int i = pipeline.seq_base; i<pipeline.next_seq_num;i++){
-            isCorrupt(packets[i]);
+
+    //    Put packets seq_base to next_seq_num in Pipeline and return pipeline.
+//    Receiver.receivePipeline will receive Pipeline and check it`s order and something corrupted.
+    public Pipeline sendPacket() {
+
+        if (pipeline.nextSeqNum >= Env.PACKET_NUM) {
+            pipeline.nextSeqNum = Env.PACKET_NUM;
+            pipeline.setSize(pipeline.nextSeqNum - pipeline.base);
+        }
+        for (int i = pipeline.base; i < pipeline.nextSeqNum; i++) {
+            if (i > Env.PACKET_NUM) System.out.println("ERR: Out Of Bount");
+            packets[i].setPayload(i);
             pipeline.add(packets[i]);
         }
-        for(Packet packet: pipeline){
-            System.out.println(packet.pkt_num + ": "+packet.corrupt); // Number of corrupted packet
-        }
+        return pipeline;
     }
 
-    public void rcvAck(){
+    public void rcvACK(CumulACK rcv_cumulACK) {
+
+        cumulACK = rcv_cumulACK;
         int i;
-        for(i = 1; i<cumulativeACK.size();i++){
-            if(cumulativeACK.get(i).pkt_num != cumulativeACK.get(i-1).pkt_num + 1){
-                pipeline.next_seq_num--;
-//                ACK temp = cumulativeACK.get(i);
-//                cumulativeACK.clear();
-//                cumulativeACK.add(temp);
-                break;
+        for (i = 0; i < cumulACK.size(); i++) {
+            cumulACK.get(i).rcvTime++;
+            if (pipeline.get(i).pktNum == cumulACK.get(i).pktNum && pipeline.get(i).sendTime == cumulACK.get(i).rcvTime - 2) {
+                pipeline.base++;
+                pipeline.nextSeqNum++;
             } else {
-                pipeline.removeFirst();
+                break;
             }
-            pipeline.seq_base++;
-            pipeline.next_seq_num++;
         }
-
-//        Packet tmp = pipeline.get()
-
-        for(ACK ack: cumulativeACK)
-            System.out.println("rcvACK: "+ack.pkt_num);
-        System.out.println("seq_base in rcvACK: "+pipeline.seq_base);
-        System.out.println("size of pipeline in rcvACK: "+pipeline.size());
-        for(Packet ack: pipeline)
-            System.out.println("Pipeline: "+ack.pkt_num +": "+ack.corrupt);
-
-    }
-
-    public void isCorrupt(Packet packet){
-        packet.corrupt = (rand.nextDouble() <= .1);
+        if (i == cumulACK.size()) {
+            System.out.println();
+            System.out.println("---------- Packet Received Clearly -----------");
+            System.out.println();
+        } else {
+            System.out.println();
+            System.out.printf("---------- Packet Number %d Time Out ----------\n", pipeline.get(i).pktNum);
+            System.out.println();
+        }
     }
 }
+

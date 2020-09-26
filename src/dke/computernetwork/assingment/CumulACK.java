@@ -1,4 +1,4 @@
-package dke.computernetwork.assingment1;
+package dke.computernetwork.assingment;
 
 import java.util.LinkedList;
 

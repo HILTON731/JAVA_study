@@ -1,11 +1,11 @@
-package dke.computernetwork.assingment1;
+package dke.computernetwork.assingment_tried;
 
 import java.util.LinkedList;
 
 public class Pipeline extends LinkedList<Packet> {
-    public int base = 0;
-    public int nextSeqNum = Env.MAX_SIZE;
-    public int windowSize = Env.MAX_SIZE;
+    public int seq_base = 0;
+    public int next_seq_num = Env.MAX_SIZE;
+    public int window_size = Env.MAX_SIZE;
 
     @Override
     public int size() {
@@ -14,7 +14,8 @@ public class Pipeline extends LinkedList<Packet> {
 
     @Override
     public boolean add(Packet packet) {
-        while (size() >= windowSize) {
+        if(size() >= Env.MAX_SIZE) {
+//            System.out.println("remove pkt "+getFirst().pkt_num+" in pipeline");
             removeFirst();
         }
         return super.add(packet);
@@ -28,10 +29,6 @@ public class Pipeline extends LinkedList<Packet> {
     @Override
     public Packet removeFirst() {
         return super.removeFirst();
-    }
-
-    public void setSize(int window_size) {
-        this.windowSize = window_size;
     }
 
 

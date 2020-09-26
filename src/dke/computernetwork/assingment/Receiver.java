@@ -1,27 +1,43 @@
 package dke.computernetwork.assingment;
 
-public class Receiver extends Thread{
-    Sender sender;
-    Packet packet;
-    ACK ack;
-    boolean isin = false;
+public class Receiver {
+    static Pipeline pipeline = new Pipeline();
+    static CumulACK cumulACK = new CumulACK();
 
-    public Receiver(Packet packet){
-        this.packet = packet;
+//    Receive Pipeline from Sender.
+//    After receiving check pipeline that something corrupted or inorder packet.
+    public boolean receivePipeline(Pipeline pipeline) {
+        cumulACK.clear();
+        Receiver.pipeline = pipeline;
+        checkOrder();
+        return true;
     }
-    @Override
-    public void run() {
-        if (!packet.corrupt){
-            sendACK();
+
+//    Check pipeline that received ordered and find corrupt packet.
+//    Put cumulativeACK queue if everythings fine.
+//    If inordered or corrupted packet found then collect in linkedlist detective.
+//    Return success code if packets in pipeline clear or return first packet number which has problem.
+    public void checkOrder() {
+        for (int i = 0; i < pipeline.size(); i++) {
+
+            pipeline.get(i).sendTime ++;
+
+            if (pipeline.base == pipeline.get(i).pktNum && !(pipeline.get(i).corrupt)) {
+                cumulACK.add(new ACK(pipeline.get(i).pktNum, pipeline.get(i).sendTime + 1));
+            }
+            pipeline.base++;
+        }
+        for (int i = 0; i < cumulACK.size(); i++) {
+            if (pipeline.base != cumulACK.get(i).pktNum) {
+                pipeline.base = pipeline.base + i - pipeline.size();
+                break;
+            }
+
         }
     }
 
-    public void sendACK(){
-        Sender.cumulativeACK.add(new ACK(packet.pkt_num));
-        isin = true;
-    }
-
-    public boolean isACK(){
-        return isin;
+    //    Send cumualtiveACK queue by response.
+    public CumulACK sendACK() {
+        return cumulACK;
     }
 }
