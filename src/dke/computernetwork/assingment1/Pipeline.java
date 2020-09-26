@@ -4,8 +4,8 @@ import java.util.LinkedList;
 
 public class Pipeline extends LinkedList<Packet> {
     public int base = 0;
-    public int next_seq_num = Env.MAX_SIZE;
-    public int window_size = Env.MAX_SIZE;
+    public int nextSeqNum = Env.MAX_SIZE;
+    public int windowSize = Env.MAX_SIZE;
 
     @Override
     public int size() {
@@ -14,9 +14,7 @@ public class Pipeline extends LinkedList<Packet> {
 
     @Override
     public boolean add(Packet packet) {
-
-
-        while(size() >= window_size) {
+        while (size() >= windowSize) {
             removeFirst();
         }
         return super.add(packet);
@@ -32,7 +30,9 @@ public class Pipeline extends LinkedList<Packet> {
         return super.removeFirst();
     }
 
-    public void setSize(int window_size){ this.window_size = window_size;}
+    public void setSize(int window_size) {
+        this.windowSize = window_size;
+    }
 
 
 }

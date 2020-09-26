@@ -11,7 +11,7 @@ public class CumulACK extends LinkedList<ACK> {
 
     @Override
     public boolean add(ACK ack) {
-        while(size() >= Sender.pipeline.window_size) {
+        while (size() >= Sender.pipeline.windowSize) {
             removeFirst();
         }
         return super.add(ack);
