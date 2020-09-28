@@ -29,6 +29,12 @@ public class Receiver {
 
             if (pipeline.base == pipeline.get(i).pktNum && !(pipeline.get(i).corrupt)) {
                 cumulACK.add(new ACK(pipeline.get(i).pktNum));
+            } else {
+                for(int j = i; j < pipeline.size(); j++){
+                    cumulACK.add(new ACK(pipeline.get(i).pktNum));
+                    pipeline.base++;
+                }
+                break;
             }
             pipeline.base++;
         }
