@@ -26,6 +26,4 @@ public class CumulACK extends LinkedList<ACK> {
     public ACK removeFirst() {
         return super.removeFirst();
     }
-
-
 }

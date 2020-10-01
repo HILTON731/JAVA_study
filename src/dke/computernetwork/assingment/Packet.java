@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Packet {
     public int pktNum;
-    public boolean corrupt;
+    public boolean loss;
     public long sendTime = 0;
     Random rand = new Random();
 
@@ -14,7 +14,7 @@ public class Packet {
 
 //    Set corrupt probability and decide corrupted or not.
     public void setPayload() {
-        corrupt = (rand.nextDouble() <= .1);
+        loss = (rand.nextDouble() <= .1);
     }
 
     public void setSendTime(){

@@ -37,7 +37,6 @@ public class Sender {
     }
 
     public void rcvACK(CumulACK rcv_cumulACK) {
-
         cumulACK = rcv_cumulACK;
         int i;
 
@@ -48,7 +47,7 @@ public class Sender {
                 e.printStackTrace();
             }
             cumulACK.get(i).setRcvTime();
-            if (pipeline.get(i).pktNum == cumulACK.get(i).pktNum && cumulACK.get(i).rcvTime - pipeline.get(i).sendTime <= 140) {
+            if (pipeline.get(i).pktNum == cumulACK.get(i).pktNum && cumulACK.get(i).rcvTime - pipeline.get(i).sendTime <= 160) {
                 pipeline.base++;
                 pipeline.nextSeqNum++;
             } else {

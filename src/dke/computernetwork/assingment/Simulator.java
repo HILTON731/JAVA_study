@@ -17,7 +17,7 @@ public class Simulator {
 
             System.out.println("## Sender send packet ##");
             for (Packet packet : pktblk) {
-                System.out.println("sender.sendPacket().pipeline.pkt_num: " + packet.pktNum + " IsCorrupt: " + packet.corrupt + " SendTime: " + packet.sendTime); // Number of corrupted packet.
+                System.out.println("sender.sendPacket().pipeline.pkt_num: " + packet.pktNum + " IsLoss: " + packet.loss + " SendTime: " + packet.sendTime); // Number of corrupted packet.
             }
 
 //            1/2 RTT
@@ -34,7 +34,7 @@ public class Simulator {
             }
             System.out.println("## Receiver get packet that sender sent ##");
             for (Packet packet : Receiver.pipeline){
-                System.out.println("receiver.rcvPacket().pipeline.pkt_num: " + packet.pktNum + " IsCorrupt: " + packet.corrupt + " rcvTime: " + System.currentTimeMillis()); // Number of corrupted packet.
+                System.out.println("receiver.rcvPacket().pipeline.pkt_num: " + packet.pktNum + " IsLoss: " + packet.loss + " rcvTime: " + System.currentTimeMillis()); // Number of corrupted packet.
             }
 
             System.out.println();

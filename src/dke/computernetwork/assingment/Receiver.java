@@ -18,32 +18,20 @@ public class Receiver {
 //    If inordered or corrupted packet found then collect in linkedlist detective.
 //    Return success code if packets in pipeline clear or return first packet number which has problem.
     public void checkOrder() throws InterruptedException {
-
+        int lastSuccNum = -1;
+        boolean outOfOrder = true;
         for (int i = 0; i < pipeline.size(); i++) {
             try {
                 Thread.sleep(1);
             } catch(InterruptedException e) {
                 e.printStackTrace();
             }
-//            pipeline.get(i).setSendTime();
-
-            if (pipeline.base == pipeline.get(i).pktNum && !(pipeline.get(i).corrupt)) {
+            if((outOfOrder = outOfOrder && !pipeline.get(i).loss)) {
+                lastSuccNum = pipeline.get(i).pktNum;
                 cumulACK.add(new ACK(pipeline.get(i).pktNum));
-            } else {
-                for(int j = i; j < pipeline.size(); j++){
-                    cumulACK.add(new ACK(pipeline.get(i).pktNum));
-                    pipeline.base++;
-                }
-                break;
+            } else if(!pipeline.get(i).loss){
+                cumulACK.add(new ACK(lastSuccNum));
             }
-            pipeline.base++;
-        }
-        for (int i = 0; i < cumulACK.size(); i++) {
-            if (pipeline.base != cumulACK.get(i).pktNum) {
-                pipeline.base = pipeline.base + i - pipeline.size();
-                break;
-            }
-
         }
     }
 
