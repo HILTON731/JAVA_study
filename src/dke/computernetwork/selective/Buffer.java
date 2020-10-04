@@ -1,8 +1,8 @@
-package dke.computernetwork.assingment_tried;
+package dke.computernetwork.selective;
 
 import java.util.LinkedList;
 
-public class CumulativeACK extends LinkedList<ACK> {
+public class Buffer extends LinkedList<ACK> {
 
     @Override
     public int size() {
@@ -11,11 +11,16 @@ public class CumulativeACK extends LinkedList<ACK> {
 
     @Override
     public boolean add(ACK ack) {
-        if(size() >= Env.MAX_SIZE) {
-//            System.out.println("remove pkt "+getFirst().pkt_num+" in cumulativeACK");
+        while (size() >= Sender.pipeline.windowSize) {
             removeFirst();
         }
+
         return super.add(ack);
+    }
+
+    @Override
+    public void add(int index, ACK element) {
+        super.add(index, element);
     }
 
     @Override
@@ -27,6 +32,4 @@ public class CumulativeACK extends LinkedList<ACK> {
     public ACK removeFirst() {
         return super.removeFirst();
     }
-
-
 }

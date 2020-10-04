@@ -1,4 +1,4 @@
-package dke.computernetwork.assingment;
+package dke.computernetwork.selective;
 
 public class Env {
     final static int MAX_SIZE = 10;

@@ -1,4 +1,4 @@
-package dke.computernetwork.assingment;
+package dke.computernetwork.gobackn;
 
 
 public class ACK {
