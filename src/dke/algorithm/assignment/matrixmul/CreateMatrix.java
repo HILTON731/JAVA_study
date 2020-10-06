@@ -16,8 +16,8 @@ public class CreateMatrix {
         int[][] matrix = new int[row][col];
         for(int i = 0; i < row; i++){
             for(int j = 0; j < col; j++){
-//                matrix[i][j] = random.nextInt(10);
-                matrix[i][j] = 1;
+                matrix[i][j] = random.nextInt(10);
+//                matrix[i][j] = 1;
             }
         }
         return matrix;

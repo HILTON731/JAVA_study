@@ -3,14 +3,17 @@ package dke.algorithm.assignment.matrixmul;
 import java.util.Scanner;
 
 public class StrassenMatrix {
-    private static int[][] matrix1;
-    private static int[][] matrix2;
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        matrix1 = new CreateMatrix(8, 8).createMatrix();
-        matrix2 = new CreateMatrix(8, 8).createMatrix();
+        System.out.print("Size of matrix: ");
+        int size = sc.nextInt();
+        System.out.println();
+
+        int[][] matrix1 = new CreateMatrix(size, size).createMatrix();
+        int[][] matrix2 = new CreateMatrix(size, size).createMatrix();
+
         System.out.println("matrix1");
         for (int[] arr : matrix1) {
             for (int num : arr) {
@@ -18,6 +21,7 @@ public class StrassenMatrix {
             }
             System.out.println();
         }
+
         System.out.println("matrix2");
         for (int[] arr : matrix2) {
             for (int num : arr) {
@@ -25,6 +29,7 @@ public class StrassenMatrix {
             }
             System.out.println();
         }
+
         System.out.println("mulmatrix");
         for (int[] arr : strassenMatrix(matrix1.length, 0, matrix1, matrix2)) {
             for (int num : arr) {
@@ -36,13 +41,14 @@ public class StrassenMatrix {
 
     private static int[][] strassenMatrix(int n, int count, int[][] matrix1, int[][] matrix2) {
         if (n < 2) {
-            int[][] matrix =SimpleMatrix.simpleMatrix(matrix1, matrix2);
-            for (int[] arr : matrix) {
-                for (int num : arr) {
-                    System.out.print(num + "\t");
-                }
-                System.out.println();
-            }
+            int[][] matrix = SimpleMatrix.simpleMatrix(matrix1, matrix2);
+//            System.out.println("simplematrix");
+//            for (int[] arr : matrix) {
+//                for (int num : arr) {
+//                    System.out.print(num + "\t");
+//                }
+//                System.out.println();
+//            }
             return matrix;
         }
         int length = matrix1.length / 2;
@@ -82,12 +88,13 @@ public class StrassenMatrix {
                 temp[i + length][j + length] = c4[i][j];
             }
         }
-        for (int[] arr : temp) {
-            for (int num : arr) {
-                System.out.print(num + "\t");
-            }
-            System.out.println();
-        }
+//        System.out.println("combine");
+//        for (int[] arr : temp) {
+//            for (int num : arr) {
+//                System.out.print(num + "\t");
+//            }
+//            System.out.println();
+//        }
         return temp;
     }
 
@@ -99,10 +106,11 @@ public class StrassenMatrix {
                 switch (imp) {
                     case '+':
                         temp[i][j] = matrix1[i][j] + matrix2[i][j];
+                        break;
                     case '-':
                         temp[i][j] = matrix1[i][j] - matrix2[i][j];
+                        break;
                 }
-                System.out.println(imp);
             }
         }
         return temp;
