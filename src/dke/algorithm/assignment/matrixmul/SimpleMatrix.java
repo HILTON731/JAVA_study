@@ -1,7 +1,5 @@
 package dke.algorithm.assignment.matrixmul;
 
-import java.util.Scanner;
-
 public class SimpleMatrix {
     public static int[][] simpleMatrix(int[][] matrix1, int[][] matrix2){
         int[][] matrix3 = new int[matrix1.length][matrix2[0].length];
@@ -15,7 +13,6 @@ public class SimpleMatrix {
                 }
             }
         }
-//        System.out.println("count: "+count);
         return matrix3;
     }
 }

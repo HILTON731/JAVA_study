@@ -1,17 +1,10 @@
 package dke.algorithm.assignment.matrixmul;
 
-
 public class StrassenMatrix {
 
     public static int[][] strassenMatrix(int n, int[][] matrix1, int[][] matrix2) {
         if (n < 2) {
             int[][] matrix = SimpleMatrix.simpleMatrix(matrix1, matrix2);
-//            for (int[] arr : matrix) {
-//                for (int num : arr) {
-//                    System.out.print(num + "\t");
-//                }
-//                System.out.println();
-//            }
             return matrix;
         }
         Execute.count++;
@@ -52,12 +45,6 @@ public class StrassenMatrix {
                 temp[i + length][j + length] = c4[i][j];
             }
         }
-//        for (int[] arr : temp) {
-//            for (int num : arr) {
-//                System.out.print(num + "\t");
-//            }
-//            System.out.println();
-//        }
         return temp;
     }
 

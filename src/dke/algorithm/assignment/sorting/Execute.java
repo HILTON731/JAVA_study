@@ -1,19 +1,34 @@
 package dke.algorithm.assignment.sorting;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Execute {
     static CreateInput createInput;
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        String createfile = "D:\\IdeaProjects\\Java_study\\sortingtime.csv";
+        FileWriter fw = new FileWriter(createfile);
         Scanner sc = new Scanner(System.in);
-        System.out.print("Size: ");
+        System.out.print("Max array size: ");
         int size = sc.nextInt();
         System.out.println();
-        for(int i = 1; i < 4; i++){
-            measureTime(i, new CreateInput().createInput(size));
+        fw.append("SIZE").append(',').append("BUBBLE").append(',').append("MERGE").append(',').append("QUICK").append('\n');
+        for(int i = 10000; i <= size; i+=5000) {
+            System.out.println("Array size: "+i);
+            fw.append(Integer.toString(i));
+            fw.append(',');
+            for (int j = 1; j < 4; j++) {
+                double time = measureTime(j, new CreateInput().createInput(i));
+                fw.append(Double.toString(time)).append(',');
+            }
+            fw.append('\n');
+            System.out.println();
         }
+        fw.flush();
+        fw.close();
     }
-    public static void measureTime(int i, int[] arr){
+    public static double measureTime(int i, int[] arr){
         Sort sort = new Sort();
         long start = 0, end = 0;
         switch(i){
@@ -38,5 +53,6 @@ public class Execute {
         }
         double time = (end - start)/1000.0;
         System.out.println(time+" sec");
+        return time;
     }
 }
