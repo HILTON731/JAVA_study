@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Execute {
-    static CreateInput createInput;
+    static int count = 0;
     public static void main(String[] args) throws IOException {
         String createfile = "D:\\IdeaProjects\\Java_study\\sortingtime.csv";
         FileWriter fw = new FileWriter(createfile);
@@ -13,14 +13,15 @@ public class Execute {
         System.out.print("Max array size: ");
         int size = sc.nextInt();
         System.out.println();
-        fw.append("SIZE").append(',').append("BUBBLE").append(',').append("MERGE").append(',').append("QUICK").append('\n');
+        fw.append("SIZE").append(',').append("BUBBLE").append(',').append("BUBBLE_TIME").append(',').append("MERGE").append(',').append("MERGE_TIME").append(',').append("QUICK").append(',').append("QUICK_TIME").append('\n');
         for(int i = 10000; i <= size; i+=5000) {
             System.out.println("Array size: "+i);
             fw.append(Integer.toString(i));
             fw.append(',');
             for (int j = 1; j < 4; j++) {
+                Execute.count = 0;
                 double time = measureTime(j, new CreateInput().createInput(i));
-                fw.append(Double.toString(time)).append(',');
+                fw.append(Double.toString(time)).append(',').append(Integer.toString(count)).append(',');
             }
             fw.append('\n');
             System.out.println();
@@ -52,7 +53,7 @@ public class Execute {
                 break;
         }
         double time = (end - start)/1000.0;
-        System.out.println(time+" sec");
+        System.out.println(time+"sec "+count);
         return time;
     }
 }

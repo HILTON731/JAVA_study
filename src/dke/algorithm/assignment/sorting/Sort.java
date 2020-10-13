@@ -9,6 +9,7 @@ public class Sort {
                     temp = intArray[j];
                     intArray[j] = intArray[j+1];
                     intArray[j+1] = temp;
+                    Execute.count++;
                 }
             }
         }
@@ -34,6 +35,7 @@ public class Sort {
                 temp[k] = intArray[j++];
             }
             k++;
+            Execute.count++;
         }
         if(i <= mid){
             for(;i<=mid;i++){
@@ -61,8 +63,14 @@ public class Sort {
     private int partition(int[] intArray, int start, int end) {
         int pivot = intArray[(start + end) / 2];
         while (start <= end) {
-            while (intArray[start] < pivot) start++;
-            while (intArray[end] > pivot) end--;
+            while (intArray[start] < pivot) {
+                start++;
+                Execute.count++;
+            }
+            while (intArray[end] > pivot){
+                end--;
+                Execute.count++;
+            }
             if (start <= end) {
                 int temp = intArray[start];
                 intArray[start] = intArray[end];
