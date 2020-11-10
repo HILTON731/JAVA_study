@@ -9,11 +9,16 @@ import java.util.Scanner;
 public class ShortestPath {
     static int nan = 1000;
     static int[][] W = {
-            {0, 1, nan, 1, 5},
-            {9, 0, 3, 2, nan},
-            {nan, nan, 0, 4, nan},
-            {nan, nan, 2, 0, 3},
-            {3, nan, nan, nan, 0}
+            {0, 1, 3, nan, nan},
+            {1, 0, 3, 6, nan},
+            {3, 3, 0, 4, 2},
+            {nan, 6, 4, 0, 5},
+            {nan, nan, 2, 5, 0}
+//            {0, 1, nan, 1, 5},
+//            {9, 0, 3, 2, nan},
+//            {nan, nan, 0, 4, nan},
+//            {nan, nan, 2, 0, 3},
+//            {3, nan, nan, nan, 0}
     };
     static int[][] D;
     static int[][] P;
@@ -26,30 +31,9 @@ public class ShortestPath {
         num = sc.nextInt();
         createPath(num);
         shortestPath.dynamicProgramming(W, num);
-        System.out.println("W");
-        for(int[] cs: W){
-            for(int t: cs){
-                System.out.print(t+"\t");
-            }
-            System.out.println();
-        }
-        System.out.println("D");
-        for(int[] cs: D){
-            for(int t: cs){
-                System.out.print(t+"\t");
-            }
-            System.out.println();
-        }
-        System.out.println("P");
-        for(int[] cs: P){
-            for(int t: cs){
-                System.out.print(t+"\t");
-            }
-            System.out.println();
-        }
-//        System.out.println("start, end point");
-//        int start = sc.nextInt(), end = sc.nextInt();
-//        shortestPath.path(start - 1, end - 1, P);
+        System.out.println("start, end point");
+        int start = sc.nextInt(), end = sc.nextInt();
+        shortestPath.path(start - 1, end - 1, P);
 
         W = new int[][]{
                 {0, 1, 3, nan, nan},
@@ -67,7 +51,7 @@ public class ShortestPath {
         for(int i = 0; i < size; i++){
             for(int j = 0; j < size; j++){
                 if(i!=j) {
-                    W[i][j] = (random.nextInt(9) + 1 < 1) ? Integer.MAX_VALUE : random.nextInt(10) + 1;
+                    W[i][j] = (random.nextInt(9) + 1 < 4) ? nan : random.nextInt(9) + 1;
                 } else {
                     W[i][j] = 0;
                 }
@@ -101,7 +85,7 @@ public class ShortestPath {
     public void path(int start, int end, int[][] P){
         if(P[start][end]!=0){
             path(start, P[start][end] - 1, P);
-            System.out.println(" v"+(P[start][end]));
+            System.out.println(" v"+P[start][end]);
             path(P[start][end] - 1, end, P);
         }
     }
