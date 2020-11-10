@@ -77,9 +77,9 @@ public class SeqMatMul {
         for(diagonal = 1; diagonal < num;diagonal++){
             for(i = 0; i < num-diagonal; i++){
                 j = i + diagonal;
-                temp = 0;
+                temp = Integer.MAX_VALUE;
                 for(k = i; k < j;k++){
-                    if(temp > M[i][k] + M[k+1][j]+d[i][0] * d[k + 1][0] * d[j + 1][0] || temp == 0) {
+                    if(temp > M[i][k] + M[k+1][j]+d[i][0] * d[k + 1][0] * d[j + 1][0]) {
                         temp = M[i][k] + M[k + 1][j] + d[i][0] * d[k + 1][0] * d[j + 1][0];
                         tmp = k;
                     }
