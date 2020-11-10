@@ -22,9 +22,9 @@ public class ShortestPath {
         Scanner sc = new Scanner(System.in);
         int num = 5;
 
-//        System.out.print("number of vertex: ");
-//        num = sc.nextInt();
-//        createPath(num);
+        System.out.print("number of vertex: ");
+        num = sc.nextInt();
+        createPath(num);
         shortestPath.dynamicProgramming(W, num);
         System.out.println("W");
         for(int[] cs: W){
@@ -111,12 +111,13 @@ public class ShortestPath {
         int min, n = 0;
         int[] touch = new int[num];
         int[] length = new int[num];
+        int[] F = new int[num - 1];
 
         for(i = 1; i < num; i++){
             touch[i] = 0;
             length[i] = W[0][i];
         }
-        while(n < num){
+        while(n < num - 1){
 
             System.out.println("step "+n);
             System.out.println(Arrays.toString(length));
@@ -130,6 +131,7 @@ public class ShortestPath {
                     System.out.println("sk"+vnear);
                 }
             }
+            F[vnear - 1] = length[vnear];
             System.out.println("vnear: "+vnear+" min: "+min);
             for(i = 1; i < num; i++){
                 if(length[vnear] + W[vnear][i] < length[i]){
@@ -140,6 +142,6 @@ public class ShortestPath {
             length[vnear] = -1;
             n++;
         }
-
+        System.out.println(Arrays.toString(F));
     }
 }
