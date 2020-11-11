@@ -1,28 +1,50 @@
 package dke.algorithm.assignment.seqmatmul;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
 public class SeqMatMul {
-    static int num;
 
-    public static void main(String[] args) {
-        int[][] d = creatMatrix();
-//        int[][] d = {{5, 0}, {2, 0}, {3, 0}, {4, 0}, {6, 0}, {7, 0}, {8, 0}};
-        System.out.println();
-        System.out.println(Arrays.deepToString(d));
-//        num = 7;
+    public static void main(String[] args) throws IOException {
+        int[][] d;
+        long start, end;
+        double BF, DP;
         SeqMatMul seqMatMul = new SeqMatMul();
-        System.out.println(seqMatMul.bruteForce(d, num - 1));
-        System.out.println(seqMatMul.dynamicProgramming(d,num - 1));
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Matrix count num: ");
+        int num = sc.nextInt();
+        String createfile = "D:\\IdeaProjects\\Java_study\\seqmatmul.csv";
+        FileWriter fw = new FileWriter(createfile);
+        fw.append("SIZE").append(',').append("BF_TIME").append(',').append("DP_TIME").append('\n');
+
+
+        for (int i = 3; i <= num; i++) {
+            d = creatMatrix(i + 1);
+            System.out.println();
+            System.out.println(Arrays.deepToString(d));
+
+            System.out.print("bruteForce result: ");
+            start = System.nanoTime();
+            System.out.println(seqMatMul.bruteForce(d, i, num));
+            end = System.nanoTime();
+            System.out.println("bruteForce time: " + (BF = (end - start) / 1000000000.0));
+
+            System.out.print("dP result: ");
+            start = System.nanoTime();
+            System.out.println(seqMatMul.dynamicProgramming(d, i));
+            end = System.nanoTime();
+            System.out.println("dP time: " + (DP = (end - start) / 1000000000.0));
+            fw.append(Integer.toString(i)).append(',').append(Double.toString(BF)).append(',').append(Double.toString(DP)).append('\n');
+        }
+        fw.flush();
+        fw.close();
     }
 
-    public static int[][] creatMatrix() {
-        Scanner sc = new Scanner(System.in);
-        Random rand = new Random();
-        System.out.print("Matrix count num: ");
-        num = sc.nextInt() + 1;
+    public static int[][] creatMatrix(int num) {
+        Random rand = new Random(777);
         int[][] d = new int[num][2];
         for (int i = 0; i < num; i++) {
             d[i][0] = rand.nextInt(10) + 1;
@@ -40,7 +62,7 @@ public class SeqMatMul {
         return count > 2;
     }
 
-    public int bruteForce(int[][] d, int count) {
+    public int bruteForce(int[][] d, int count, int num) {
         int[] fin = new int[count - 1];
         int tmp, temp = 0;
         for (int i = 0; i < count - 1 && countZero(d, i); i++) {
@@ -56,7 +78,7 @@ public class SeqMatMul {
                 }
             }
             if (count < 3) fin[i] = tmp;
-            else fin[i] = tmp + bruteForce(d, count - 1);
+            else fin[i] = tmp + bruteForce(d, count - 1, num);
             d[temp][1] = 0;
         }
         if (fin.length == 1) return fin[0];
@@ -68,18 +90,19 @@ public class SeqMatMul {
             return tmp;
         }
     }
-    public int dynamicProgramming(int[][] d, int num){
+
+    public int dynamicProgramming(int[][] d, int num) {
         int[][] M = new int[num][num];
         int[][] P = new int[num - 1][num];
-        int diagonal = 0;
-        int i, j, k = 0, temp, tmp = 0;
+        int diagonal;
+        int i, j, k, temp, tmp = 0;
 
-        for(diagonal = 1; diagonal < num;diagonal++){
-            for(i = 0; i < num-diagonal; i++){
+        for (diagonal = 1; diagonal < num; diagonal++) {
+            for (i = 0; i < num - diagonal; i++) {
                 j = i + diagonal;
                 temp = Integer.MAX_VALUE;
-                for(k = i; k < j;k++){
-                    if(temp > M[i][k] + M[k+1][j]+d[i][0] * d[k + 1][0] * d[j + 1][0]) {
+                for (k = i; k < j; k++) {
+                    if (temp > M[i][k] + M[k + 1][j] + d[i][0] * d[k + 1][0] * d[j + 1][0]) {
                         temp = M[i][k] + M[k + 1][j] + d[i][0] * d[k + 1][0] * d[j + 1][0];
                         tmp = k;
                     }
@@ -87,16 +110,6 @@ public class SeqMatMul {
                 M[i][j] = temp;
                 P[i][j] = tmp + 1;
             }
-        }
-        System.out.println("M");
-        for(int[] cs : M){
-            for(int ct: cs)
-                System.out.print(ct+"\t");
-            System.out.println();
-        }
-        System.out.println("P");
-        for(int[] cs : P){
-            System.out.println(Arrays.toString(cs));
         }
         return M[0][num - 1];
     }
