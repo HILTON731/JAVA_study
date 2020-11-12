@@ -1,7 +1,5 @@
 package dke.algorithm.assignment.shortestpath;
 
-import edu.princeton.cs.introcs.In;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
@@ -26,16 +24,19 @@ public class ShortestPath {
 
         System.out.print("number of vertex: ");
         num = sc.nextInt();
-        for(int i = 3; i <= num; i++) {
+        for(int i = 3; i <= num; i+=i) {
+            System.out.println("Size: "+i);
             createPath(i);
             start = System.nanoTime();
             shortestPath.dynamicProgramming(W, i);
             end = System.nanoTime();
-            System.out.println("DP result: " + Arrays.toString(D[0]) + " DP Time: " + (t1 = (end - start) / 1000000000.0));
+            System.out.println("DP result: " + Arrays.toString(D[0]));
+            System.out.println("DP Time: " + (t1 = (end - start) / 1000000000.0));
             start = System.nanoTime();
             shortestPath.dijkstra(W, i);
             end = System.nanoTime();
-            System.out.println("dijkstra result: " + Arrays.toString(F) + " dijkstra Time: " + (t2 = (end - start) / 1000000000.0));
+            System.out.println("dijkstra result: " + Arrays.toString(F));
+            System.out.println("dijkstra Time: " + (t2 = (end - start) / 1000000000.0));
             fw.append(Integer.toString(i)).append(',').append(Double.toString(t1)).append(',').append(Double.toString(t2)).append('\n');
         }
         fw.flush();
@@ -46,8 +47,8 @@ public class ShortestPath {
         Random random = new Random();
         for(int i = 0; i < size; i++){
             for(int j = 0; j < size; j++){
-                if(i<j){
-                    W[i][j] = W[j][i] = (random.nextInt(9) + 1 < 3) ? nan : random.nextInt(9) + 1;
+                if(i!=j){
+                    W[i][j] = (random.nextInt(9) + 1 < 3) ? nan : random.nextInt(10) + 1;
                 }
             }
         }
@@ -70,14 +71,6 @@ public class ShortestPath {
             }
         }
     }
-    public void path(int start, int end, int[][] P){
-        if(P[start][end]!=0){
-            path(start, P[start][end] - 1, P);
-            System.out.println(" v"+(P[start][end]));
-            path(P[start][end] - 1, end, P);
-        }
-    }
-
     public void dijkstra(int[][] W, int num){
         int i, vnear = 0;
         int min, n = 0;
